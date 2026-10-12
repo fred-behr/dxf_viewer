@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../utils/dxf_text_utils.dart';
 import 'xyz.dart';
 import '../sections/blocks.dart';
 import '../dxf.dart';
@@ -45,33 +44,21 @@ class DxfText extends DxfXyz {
           Code(1, textString),
           Code(100, 'AcDbText'),
         ]);
-
   @override
   void draw(BlocksSection blocks, Canvas canvas, Paint paint) {
-    final displayText = cleanDxfText(_textString);
-
-    if (displayText.isEmpty) return;
-
     canvas.save();
     canvas.scale(1, -1);
-
-    final textPainter = TextPainter(
-      text: TextSpan(
-        text: displayText,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: _textHeight * 1.5,
-        ),
-      ),
-      textAlign: TextAlign.left,
-      textDirection: TextDirection.ltr,
-    )..layout();
-
-    textPainter.paint(
-      canvas,
-      Offset(coord.x, -(coord.y + _textHeight)),
-    );
-
+    final TextPainter textPainter = TextPainter(
+        text: TextSpan(
+            text: _textString,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: _textHeight * 1.5,
+            )),
+        textAlign: TextAlign.justify,
+        textDirection: TextDirection.ltr)
+      ..layout();
+    textPainter.paint(canvas, Offset(coord.x, -(coord.y + _textHeight)));
     canvas.restore();
   }
 }
